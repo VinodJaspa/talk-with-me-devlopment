@@ -75,7 +75,7 @@ export const createUser = async (values) => {
 const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
-    url: 'https://fantastic-sherbet-f9a08c.netlify.app',
+    url: 'talk-with-me.netlify.app',
     // This must be true.
     handleCodeInApp: true,
     iOS: {
