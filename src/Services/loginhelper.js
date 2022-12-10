@@ -15,6 +15,8 @@ var response =[]
         if (res) {
             const { createdAt } = res.user.metadata;
             const uid = res.user.uid;
+            const email = res.user.email;
+            const photoURL =res.user.photoURL;
             console.log(res, "/resss");
 
             //create doc file in firestore
@@ -23,6 +25,8 @@ var response =[]
 
             setDoc(doc(db, 'users', createdAt), {
                 ...res.user.metadata,
+                email:email,
+                photoURL:photoURL,
                 uid: uid
             })
                 .then(() => {

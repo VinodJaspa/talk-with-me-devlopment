@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import CheckoutPage from '../Pages/CheckoutPage/checkout';
 import LoginPage from '../Pages/Login/loginmain';
+import SignUpPage from '../Pages/SignUpPage/signuppage';
 export default function PageRoutes() {
     const isLoggedIn = useSelector((state) => state.userInfo.data);
     console.log(isLoggedIn,"lohhh");
@@ -38,6 +39,7 @@ export default function PageRoutes() {
             <Routes>
                 <Route element={<PublicRoute isAuthenticated={isUserLoggedIn} />}>
                     <Route path="/" element={<LoginPage />} />
+                    <Route path='sign-up' element={<SignUpPage/>}/>
 
                 </Route>
 

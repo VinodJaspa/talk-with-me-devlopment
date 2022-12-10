@@ -3,29 +3,29 @@ import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import Button from '../../Components/PaymentButton/paymentbutton';
 import * as Yup from "yup";
-import './login.css'
+import './signup.css'
 import { toast } from "react-toastify";
-import { getAuthentication } from '../../Services/loginhelper';
+
 import { useDispatch } from 'react-redux';
 
 import { Formik, Form, Field } from 'formik';
 import { authSuccess } from '../../Redux/userauth';
-export default function LoginScreen() {
+export default function SignUpScreen() {
     const [loading, setLoading] = useState(false);
     const [passwordType, setPasswordType] = useState("password");
     const dispatch = useDispatch();
 
 
-    const loginValidation = Yup.object().shape({
+    const signUpValidation = Yup.object().shape({
         email: Yup.string().email("Must be a valid email").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
+        username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
         password: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required")
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
         setLoading(true);
-        const response = await getAuthentication(values)
-        console.log(response, "response");
+        const response = await createUser(values)
         if (response.length > 0) {
             //sending the user information in store 
 
@@ -53,11 +53,12 @@ export default function LoginScreen() {
 
             <Formik initialValues={
                 {
+                    username: '',
                     email: "",
                     password: ""
                 }
             }
-                validationSchema={loginValidation}
+                validationSchema={signUpValidation}
                 onSubmit={
                     (values) => handleSubmit(values)
                 }>
@@ -73,29 +74,18 @@ export default function LoginScreen() {
                             <Form className='form-container'>
 
                                 <div>
-                                    <div class="text-center mb-3">
-                                        <p>Sign in with:</p>
-                                        <button type="button" className="btn btn-link btn-floating mx-1">
-                                            <i className="bi bi-facebook display-7 "></i>
-                                        </button>
-
-                                        <button type="button" class="btn btn-link btn-floating mx-1">
-                                            <i className="bi bi-google display-7 "></i>
-                                        </button>
-
-                                        <button type="button" class="btn btn-link btn-floating mx-1">
-                                            <i className="bi bi-twitter display-7"></i>
-                                        </button>
-
-                                        <button type="button" class="btn btn-link btn-floating mx-1">
-                                            <i className="bi bi-github display-7"></i>
-                                        </button>
-                                    </div>
-
-                                    <p class="text-center h6">OR:</p>
 
                                     <div className="form-group mt-4">
-                                        <label htmlFor="userEmail" className='helper-text-label'>Email</label>
+                                        <label htmlFor="username" className='helper-text-label'>User Name</label>
+                                        <Field type="text" name="username" className="form-control" id="username" />
+
+                                        {errors.username && touched.username ? (
+                                            <div className='text-danger'>{errors.username}</div>
+                                        ) : null}
+
+                                    </div>
+                                    <div className="form-group mt-4">
+                                        <label htmlFor="userEmail" className='helper-text-label'>User Name</label>
                                         <Field type="email" name="email" className="form-control" id="userEmail" />
 
                                         {errors.email && touched.email ? (
@@ -111,10 +101,7 @@ export default function LoginScreen() {
                                             <Field type={passwordType}
                                                 name="password"
                                                 className="form-control"
-                                                id="userEuserPasswordmail" />
-
-
-
+                                                id="userPassword" />
 
                                         </div>
                                         <i className="bi bi-eye-slash password-eye" onClick={togglePassword}> </i>
@@ -128,23 +115,18 @@ export default function LoginScreen() {
                                     <div className="row mt-4">
                                         <div className="col-md-6 d-flex justify-content-center">
 
+
+                                            <div className='col-md-6 d-flex justify-content-center'>
+                                                <Link to="/sign-up-with-phone-number">Use phone number instead</Link>
+                                            </div>
                                             <div className="form-check mb-3 mb-md-0">
                                                 <input className="form-check-input" type="checkbox" value="" id="loginCheck" />
-                                                <label className="form-check-label" htmlFor="loginCheck"> Remember me </label>
+                                                <label className="form-check-label text-muted" htmlFor="loginCheck">By clicking this you are agree to <u className='text-bold'>Terms and condtions </u>
+                                                    of this site. </label>
                                             </div>
                                         </div>
 
-                                        <div className='col-md-6 d-flex justify-content-center'>
-                                            <Link to="/forgot">Forgot Password?</Link>
-                                        </div>
                                     </div>
-                                </div>
-                                <div className="row mt-4">
-
-                                    <div className='col-md-6 d-flex justify-content-center'>
-                                        <Link to="/sign-up">Don't have account just create one?</Link>
-                                    </div>
-
                                 </div>
                                 <div className='mt-4 button-container'>
                                     {
@@ -156,7 +138,7 @@ export default function LoginScreen() {
 
                                             </div>
                                         ) : (
-                                            <Button type="submit" buttonName='Login' />
+                                            <Button type="submit" buttonName='Continue' />
                                         )
                                     } </div>
 
