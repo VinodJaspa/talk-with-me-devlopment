@@ -10,6 +10,7 @@ import {
 import CheckoutPage from '../Pages/CheckoutPage/checkout';
 import LoginPage from '../Pages/Login/loginmain';
 import SignUpPage from '../Pages/SignUpPage/signuppage';
+import ThanksSignUpPage from '../Pages/ThanksSignUp/thankssignup';
 export default function PageRoutes() {
     const isLoggedIn = useSelector((state) => state.userInfo.data);
     console.log(isLoggedIn,"lohhh");
@@ -40,6 +41,8 @@ export default function PageRoutes() {
                 <Route element={<PublicRoute isAuthenticated={isUserLoggedIn} />}>
                     <Route path="/" element={<LoginPage />} />
                     <Route path='sign-up' element={<SignUpPage/>}/>
+                    <Route path='success-signup' element={<ThanksSignUpPage/>}/>
+
 
                 </Route>
 

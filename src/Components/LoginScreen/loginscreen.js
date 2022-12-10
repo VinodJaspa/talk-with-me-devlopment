@@ -141,7 +141,7 @@ export default function LoginScreen() {
                                 </div>
                                 <div className="row mt-4">
 
-                                    <div className='col-md-6 d-flex justify-content-center'>
+                                    <div className='col-md-12 text-center'>
                                         <Link to="/sign-up">Don't have account just create one?</Link>
                                     </div>
 

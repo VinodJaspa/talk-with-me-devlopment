@@ -4,12 +4,12 @@ import { db } from "../Firebase/firebaseconfig";
 import { toast } from "react-toastify";
 
 export const createUser = async (values) => {
-    const { email, password } = values;
+    const { email, password, username } = values;
     var isSuccess = false;
     try {
         const auth = getAuth();
-        let res = createUserWithEmailAndPassword(auth, email, password)
-
+        let res = await createUserWithEmailAndPassword(auth, email, password)
+        console.log(res, "res___");
         if (res) {
             const { createdAt } = res.user.metadata;
             const uid = res.user.uid;
@@ -22,12 +22,14 @@ export const createUser = async (values) => {
             setDoc(doc(db, 'users', createdAt), {
                 ...res.user.metadata,
                 email: email,
+                username: username,
                 photoURL: photoURL,
                 uid: uid
             })
                 .then(() => {
                     console.log('Document successfully written!')
                     toast.success("You have successfully created your account", { theme: "colored" });
+                    isSuccess = true;
                     sendSignInLinkToEmail(auth, email, actionCodeSettings)
                         .then(() => {
                             // The link was successfully sent. Inform the user.
@@ -57,12 +59,13 @@ export const createUser = async (values) => {
                     toast.error("Oops! Something went wrong!", { theme: "colored" });
 
                     console.error('Error writing document: ', error)
+                    return isSuccess;
                 })
         }
     }
     catch (e) {
         console.log(e, "errr");
-         toast.error(e.message, { theme: "colored" });
+        toast.error(e.message, { theme: "colored" });
         return isSuccess;
 
     }
@@ -72,7 +75,7 @@ export const createUser = async (values) => {
 const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
-    url: 'localhost',
+    url: 'http://localhost:3000',
     // This must be true.
     handleCodeInApp: true,
     iOS: {

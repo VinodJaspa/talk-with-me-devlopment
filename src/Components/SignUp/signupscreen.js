@@ -1,43 +1,38 @@
 
-import React, { useState } from 'react'
-import { Link } from "react-router-dom";
-import Button from '../../Components/PaymentButton/paymentbutton';
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import './signup.css'
-import { toast } from "react-toastify";
+import Button from '../../Components/PaymentButton/paymentbutton';
+import './signup.css';
 
-import { useDispatch } from 'react-redux';
 
-import { Formik, Form, Field } from 'formik';
-import { authSuccess } from '../../Redux/userauth';
+
+import { Field, Form, Formik } from 'formik';
+import { createUser } from '../../Services/signuphelper';
 export default function SignUpScreen() {
     const [loading, setLoading] = useState(false);
     const [passwordType, setPasswordType] = useState("password");
-    const dispatch = useDispatch();
+     const navigate = useNavigate();
 
 
     const signUpValidation = Yup.object().shape({
         email: Yup.string().email("Must be a valid email").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
-        username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
+        // username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
         password: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required")
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
         setLoading(true);
-        const response = await createUser(values)
-        if (response.length > 0) {
-            //sending the user information in store 
-
-            dispatch(authSuccess(response))
-
-            toast.success("You are successfully log in!", { theme: "colored" });
-            setLoading(false);
-            return;
-        } else {
-            setLoading(false);
-
-        }
+     const res =  await createUser(values)
+     if(res === true){
+        setLoading(false);
+        navigate("/success-signup");
+        return;
+     } else {
+        setLoading(false);
+     }
+       
     }
     // Function to show and hide password
     const togglePassword = () => {
@@ -53,7 +48,7 @@ export default function SignUpScreen() {
 
             <Formik initialValues={
                 {
-                    username: '',
+                    username: "",
                     email: "",
                     password: ""
                 }
@@ -76,8 +71,8 @@ export default function SignUpScreen() {
                                 <div>
 
                                     <div className="form-group mt-4">
-                                        <label htmlFor="username" className='helper-text-label'>User Name</label>
-                                        <Field type="text" name="username" className="form-control" id="username" />
+                                        <label htmlFor="userName" className='helper-text-label'>User Name</label>
+                                        <Field type="text" name="username" className="form-control" id="userName" />
 
                                         {errors.username && touched.username ? (
                                             <div className='text-danger'>{errors.username}</div>
@@ -85,7 +80,7 @@ export default function SignUpScreen() {
 
                                     </div>
                                     <div className="form-group mt-4">
-                                        <label htmlFor="userEmail" className='helper-text-label'>User Name</label>
+                                        <label htmlFor="userEmail" className='helper-text-label'>Email</label>
                                         <Field type="email" name="email" className="form-control" id="userEmail" />
 
                                         {errors.email && touched.email ? (
@@ -111,14 +106,20 @@ export default function SignUpScreen() {
                                         ) : null}
                                     </div>
 
-
                                     <div className="row mt-4">
-                                        <div className="col-md-6 d-flex justify-content-center">
+                                        <div className="col-md-12 d-flex justify-content-strt">
 
 
                                             <div className='col-md-6 d-flex justify-content-center'>
                                                 <Link to="/sign-up-with-phone-number">Use phone number instead</Link>
                                             </div>
+                                          
+                                        </div>
+
+                                    </div>
+
+                                    <div className="row mt-4">
+                                        <div className="col-md-12 justify-content-start">
                                             <div className="form-check mb-3 mb-md-0">
                                                 <input className="form-check-input" type="checkbox" value="" id="loginCheck" />
                                                 <label className="form-check-label text-muted" htmlFor="loginCheck">By clicking this you are agree to <u className='text-bold'>Terms and condtions </u>
@@ -127,6 +128,8 @@ export default function SignUpScreen() {
                                         </div>
 
                                     </div>
+                                    
+
                                 </div>
                                 <div className='mt-4 button-container'>
                                     {
