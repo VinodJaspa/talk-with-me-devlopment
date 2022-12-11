@@ -43,6 +43,7 @@ export const createUser = async (values) => {
 
                         })
                         .catch((error) => {
+                            console.log(error,"erorr");
                             const errorCode = error.code;
                             console.log(errorCode, "errorCode");
                             const errorMessage = error.message;
@@ -78,5 +79,5 @@ const actionCodeSettings = {
     url: 'https://talk-with-me.netlify.app',
     // This must be true.
    
-    dynamicLinkDomain: 'https://talk-with-me.netlify.app/success-signup'
+    dynamicLinkDomain: 'https://talk-with-me.netlify.app'
 };
