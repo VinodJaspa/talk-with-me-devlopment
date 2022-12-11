@@ -86,5 +86,5 @@ const actionCodeSettings = {
         installApp: true,
         minimumVersion: '12'
     },
-    dynamicLinkDomain: 'https://talk-with-me.netlify.app/'
+    // dynamicLinkDomain: 'https://talk-with-me.netlify.app/'
 };
