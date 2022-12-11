@@ -79,5 +79,5 @@ const actionCodeSettings = {
     url: 'https://talk-with-me.netlify.app',
     // This must be true.
    
-    dynamicLinkDomain: 'https://talk-with-me.netlify.app'
+    // dynamicLinkDomain: 'https://talk-with-me.netlify.app'
 };
