@@ -18,8 +18,30 @@ export const createUser = async (values) => {
             //create doc file in firestore
             //Creatse a new collection and save user info
 
+            await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+                .then(() => {
+                    // The link was successfully sent. Inform the user.
+                    // Save the email locally so you don't need to ask the user for it again
+                    // if they open the link on the same device.
+                    toast.success("An email link is sent to your email address!", { theme: "colored" });
 
-            setDoc(doc(db, 'users', createdAt), {
+                    window.localStorage.setItem('emailForSignIn', email);
+                    isSuccess = true;
+                    return isSuccess;
+
+                })
+                .catch((error) => {
+                    console.log(error, "erorr");
+                    const errorCode = error.code;
+                    console.log(errorCode, "errorCode");
+                    const errorMessage = error.message;
+                    toast.error(errorMessage, { theme: "colored" });
+                    return isSuccess;
+
+
+                    // ...
+                });
+            await setDoc(doc(db, 'users', createdAt), {
                 ...res.user.metadata,
                 email: email,
                 username: username,
@@ -30,29 +52,7 @@ export const createUser = async (values) => {
                     console.log('Document successfully written!')
                     toast.success("You have successfully created your account", { theme: "colored" });
                     isSuccess = true;
-                    sendSignInLinkToEmail(auth, email, actionCodeSettings)
-                        .then(() => {
-                            // The link was successfully sent. Inform the user.
-                            // Save the email locally so you don't need to ask the user for it again
-                            // if they open the link on the same device.
-                            toast.success("An email link is sent to your email address!", { theme: "colored" });
 
-                            window.localStorage.setItem('emailForSignIn', email);
-                            isSuccess = true;
-                            return isSuccess;
-
-                        })
-                        .catch((error) => {
-                            console.log(error,"erorr");
-                            const errorCode = error.code;
-                            console.log(errorCode, "errorCode");
-                            const errorMessage = error.message;
-                            toast.error(errorMessage, { theme: "colored" });
-                            return isSuccess;
-
-
-                            // ...
-                        });
 
 
                 })
@@ -78,6 +78,6 @@ const actionCodeSettings = {
     // URL must be in the authorized domains list in the Firebase Console.
     url: 'https://talk-with-me.netlify.app',
     // This must be true.
-   
+
     // dynamicLinkDomain: 'https://talk-with-me.netlify.app'
 };
