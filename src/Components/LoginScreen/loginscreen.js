@@ -142,7 +142,7 @@ export default function LoginScreen() {
                                 <div className="row mt-4">
 
                                     <div className='col-md-12 text-center'>
-                                        <Link to="/sign-up">Don't have account just create one?</Link>
+                                        <Link to="/sign-up-with-email">Don't have account just create one?</Link>
                                     </div>
 
                                 </div>
