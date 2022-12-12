@@ -9,30 +9,33 @@ import './signup.css';
 
 import { Field, Form, Formik } from 'formik';
 import { createUser } from '../../Services/signuphelper';
-export default function SignUpScreen() {
+import { toast } from 'react-toastify';
+import { PhoneNumber } from '../PhoneInput/phoneInput';
+export default function SignUpWithPhone() {
     const [loading, setLoading] = useState(false);
     const [passwordType, setPasswordType] = useState("password");
     const navigate = useNavigate();
 
 
     const signUpValidation = Yup.object().shape({
-        email: Yup.string().email("Must be a valid email").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
+        // phoneNumber: Yup.string().phoneNumber("Must be a valid email").min(10, "Too Short!").max(13, "Too Long!").required("Required"),
         // username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
         password: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required")
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-        setLoading(true);
-        const res = await createUser(values)
-        console.log(res, "ress___");
-        if (res === true) {
-            setLoading(false);
-            navigate("../success-signup");
-            return;
-        } else {
-            setLoading(false);
-        }
+        toast.warning("We are working on it", { theme: "colored" })
+        // setLoading(true);
+        // const res = await createUser(values)
+        // console.log(res, "ress___");
+        // if (res === true) {
+        //     setLoading(false);
+        //     navigate("../success-signup");
+        //     return;
+        // } else {
+        //     setLoading(false);
+        // }
 
     }
     // Function to show and hide password
@@ -50,7 +53,7 @@ export default function SignUpScreen() {
             <Formik initialValues={
                 {
                     username: "",
-                    email: "",
+                    phoneNumber: "",
                     password: ""
                 }
             }
@@ -81,11 +84,19 @@ export default function SignUpScreen() {
 
                                     </div>
                                     <div className="form-group mt-4">
-                                        <label htmlFor="userEmail" className='helper-text-label'>Email</label>
-                                        <Field type="email" name="email" className="form-control" id="userEmail" />
+                                        <label htmlFor="phoneNumberInput" className='helper-text-label'>Mobile Number</label>
+                                        {/* <Field type="tel" name="phoneNumber" className="form-control" id="phoneNumberInput" /> */}
+                                        <PhoneNumber
+                                            type="tel"
+                                            name="phoneNumber"
+                                            className="form-control"
+                                            id="phoneNumberInput"
+                                            // component={PhoneNumber}
+                                        />
 
-                                        {errors.email && touched.email ? (
-                                            <div className='text-danger'>{errors.email}</div>
+
+                                        {errors.phoneNumber && touched.phoneNumber ? (
+                                            <div className='text-danger'>{errors.phoneNumber}</div>
                                         ) : null}
 
                                     </div>
@@ -111,8 +122,8 @@ export default function SignUpScreen() {
                                         <div className="col-md-12 d-flex justify-content-strt">
 
 
-                                            <div className='col-md-6 d-flex justify-content-center'>
-                                                <Link to="/sign-up-with-phone-number">Use phone number instead</Link>
+                                            <div className='col-md-6 d-flex justify-content-start'>
+                                                <Link to="/sign-up-with-email">Use email instead</Link>
                                             </div>
 
                                         </div>

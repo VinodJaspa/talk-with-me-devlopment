@@ -1,16 +1,16 @@
 import React from 'react'
-import ThanksWindow from '../../Components/ThanksSignUp/thankspages'
+
+import SignUpWithPhone from '../../Components/SignUp/signupwithphone'
 
 
-
-export default function ThanksSignUpPage() {
+export default function SignUpWithPhonePage() {
     return (
         <div className='container-fluid'>
 
 
             <div className='container  mt-6'>
                 <div className='login-wrapper'>
-                    <ThanksWindow/>
+                 <SignUpWithPhone/>
 
                 </div>
 

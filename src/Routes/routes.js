@@ -10,10 +10,11 @@ import {
 import CheckoutPage from '../Pages/CheckoutPage/checkout';
 import LoginPage from '../Pages/Login/loginmain';
 import SignUpPage from '../Pages/SignUpPage/signuppage';
+import SignUpWithPhonePage from '../Pages/SignUpPage/signupwithphone';
 import ThanksSignUpPage from '../Pages/ThanksSignUp/thankssignup';
 export default function PageRoutes() {
     const isLoggedIn = useSelector((state) => state.userInfo.data);
-    console.log(isLoggedIn,"lohhh");
+    console.log(isLoggedIn, "lohhh");
     const [isUserLoggedIn, setUserLoggedIn] = useState(false)
     function PublicRoute({ isAuthenticated }) {
         if (isAuthenticated)
@@ -40,8 +41,10 @@ export default function PageRoutes() {
             <Routes>
                 <Route element={<PublicRoute isAuthenticated={isUserLoggedIn} />}>
                     <Route path="/" element={<LoginPage />} />
-                    <Route path='sign-up' element={<SignUpPage/>}/>
-                    <Route path='success-signup' element={<ThanksSignUpPage/>}/>
+                    <Route path='sign-up-with-email' element={<SignUpPage />} />
+                    <Route path='success-signup' element={<ThanksSignUpPage />} />
+                    <Route path='sign-up-with-phone-number' element={<SignUpWithPhonePage/>} />
+
 
 
                 </Route>
