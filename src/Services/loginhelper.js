@@ -13,10 +13,10 @@ export const getAuthentication = async (values) => {
             values.password
         );
         if (res) {
-                const uid = res.user.uid;
+            const uid = res.user.uid;
 
-                if (res && res.user.emailVerified === true) {
-                 response = await getcurrentUserData(uid);
+            if (res && res.user.emailVerified === true) {
+                response = await getcurrentUserData(uid);
                 if (response.length) {
                     return response;
                 } else {

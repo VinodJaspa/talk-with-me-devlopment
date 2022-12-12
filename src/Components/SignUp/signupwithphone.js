@@ -7,46 +7,54 @@ import './signup.css';
 
 
 
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { Field, Form, Formik } from 'formik';
-import { createUser } from '../../Services/signuphelper';
-import { toast } from 'react-toastify';
+import { SignUpWithPhoneHelper } from '../../Services/signupwithphone';
 import { PhoneNumber } from '../PhoneInput/phoneInput';
+import { toast } from 'react-toastify';
 export default function SignUpWithPhone() {
     const [loading, setLoading] = useState(false);
-    const [passwordType, setPasswordType] = useState("password");
+
     const navigate = useNavigate();
 
-
+    const phoneSchema = Yup.string().matches(new RegExp('[+0-9]{7}'))
     const signUpValidation = Yup.object().shape({
-        // phoneNumber: Yup.string().phoneNumber("Must be a valid email").min(10, "Too Short!").max(13, "Too Long!").required("Required"),
-        // username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
-        password: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required")
+
+        // phoneNumber: Yup.string().matches(phoneSchema, 'Phone number is not valid'),
+        username: Yup.string().required("Required"),
+
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-        toast.warning("We are working on it", { theme: "colored" })
-        // setLoading(true);
-        // const res = await createUser(values)
-        // console.log(res, "ress___");
-        // if (res === true) {
-        //     setLoading(false);
-        //     navigate("../success-signup");
-        //     return;
-        // } else {
-        //     setLoading(false);
-        // }
 
-    }
-    // Function to show and hide password
-    const togglePassword = () => {
-        if (passwordType === "password") {
-            setPasswordType("text");
-            return;
+
+        if (values.phoneNumber !== '') {
+            setLoading(true);
+            const res = await SignUpWithPhoneHelper(values)
+            console.log(res, 'resss');
+            localStorage.setItem("mobileNumber", values.phoneNumber);
+
+            if (res) {
+                setLoading(false);
+                toast.success("An otp has been sent to your mobile number", { theme: "colored" })
+
+                navigate("../verify-otp");
+
+                return;
+            } else {
+                setLoading(false);
+            }
+
+
+
+
+
         }
 
-        setPasswordType("password");
-    };
+    }
+
+
     return (
         <div class="d-flex justify-content-center container">
 
@@ -54,7 +62,7 @@ export default function SignUpWithPhone() {
                 {
                     username: "",
                     phoneNumber: "",
-                    password: ""
+
                 }
             }
                 validationSchema={signUpValidation}
@@ -91,7 +99,7 @@ export default function SignUpWithPhone() {
                                             name="phoneNumber"
                                             className="form-control"
                                             id="phoneNumberInput"
-                                            // component={PhoneNumber}
+                                        // component={PhoneNumber}
                                         />
 
 
@@ -100,23 +108,7 @@ export default function SignUpWithPhone() {
                                         ) : null}
 
                                     </div>
-                                    <div className='password-container'>
 
-
-                                        <div className="form-group mt-4 ">
-                                            <label htmlFor="userPassword" className='helper-text-label'>Password</label>
-                                            <Field type={passwordType}
-                                                name="password"
-                                                className="form-control"
-                                                id="userPassword" />
-
-                                        </div>
-                                        <i className="bi bi-eye-slash password-eye" onClick={togglePassword}> </i>
-
-                                        {errors.password && touched.password ? (
-                                            <div className='text-danger'>{errors.password}</div>
-                                        ) : null}
-                                    </div>
 
                                     <div className="row mt-4">
                                         <div className="col-md-12 d-flex justify-content-strt">
@@ -155,10 +147,16 @@ export default function SignUpWithPhone() {
                                         ) : (
                                             <Button type="submit" buttonName='Continue' />
                                         )
-                                    } </div>
 
+                                    } </div>
+                                <div
+
+                                    id="recaptcha-container"
+                                    class="justify-center flex"
+                                ></div>
 
                             </Form>
+
                         </div>
                     </div>
                 )}

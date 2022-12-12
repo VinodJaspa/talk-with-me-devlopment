@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import CheckoutPage from '../Pages/CheckoutPage/checkout';
 import LoginPage from '../Pages/Login/loginmain';
+import OtpPage from '../Pages/OtpPage/otppage';
 import SignUpPage from '../Pages/SignUpPage/signuppage';
 import SignUpWithPhonePage from '../Pages/SignUpPage/signupwithphone';
 import ThanksSignUpPage from '../Pages/ThanksSignUp/thankssignup';
@@ -44,8 +45,7 @@ export default function PageRoutes() {
                     <Route path='sign-up-with-email' element={<SignUpPage />} />
                     <Route path='success-signup' element={<ThanksSignUpPage />} />
                     <Route path='sign-up-with-phone-number' element={<SignUpWithPhonePage/>} />
-
-
+                    <Route path='verify-otp' element={<OtpPage/>} />
 
                 </Route>
 
