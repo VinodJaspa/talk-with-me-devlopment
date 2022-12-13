@@ -2,16 +2,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import Button from '../../Components/PaymentButton/paymentbutton';
-import './signup.css';
+import Button from '../PaymentButton/paymentbutton';
+import './signupwithphone.css';
 
-
-
-import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import { Field, Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
 import { SignUpWithPhoneHelper } from '../../Services/signupwithphone';
 import { PhoneNumber } from '../PhoneInput/phoneInput';
-import { toast } from 'react-toastify';
 export default function SignUpWithPhone() {
     const [loading, setLoading] = useState(false);
 
@@ -27,8 +24,6 @@ export default function SignUpWithPhone() {
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-
-
         if (values.phoneNumber !== '') {
             setLoading(true);
             const res = await SignUpWithPhoneHelper(values)
@@ -45,12 +40,7 @@ export default function SignUpWithPhone() {
             } else {
                 setLoading(false);
             }
-
-
-
-
-
-        }
+           }
 
     }
 

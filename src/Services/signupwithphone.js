@@ -37,7 +37,7 @@ export const saveUserInformation = async (res) => {
     const uid = res.user.uid;
     const email = res.user.email;
     const photoURL = res.user.photoURL;
-    setDoc(doc(db, 'users', createdAt), {
+    await setDoc(doc(db, 'users', createdAt), {
       ...res.user.metadata,
       email: email,
       username: '',
@@ -58,5 +58,8 @@ export const saveUserInformation = async (res) => {
 
   }
   return response;
+
+}
+const addUserEmail = async (email, uid) => {
 
 }

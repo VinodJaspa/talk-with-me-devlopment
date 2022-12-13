@@ -73,7 +73,7 @@ export default function LoginScreen() {
                             <Form className='form-container'>
 
                                 <div>
-                                    <div class="text-center mb-3">
+                                    {/* <div class="text-center mb-3">
                                         <p>Sign in with:</p>
                                         <button type="button" className="btn btn-link btn-floating mx-1">
                                             <i className="bi bi-facebook display-7 "></i>
@@ -90,7 +90,7 @@ export default function LoginScreen() {
                                         <button type="button" class="btn btn-link btn-floating mx-1">
                                             <i className="bi bi-github display-7"></i>
                                         </button>
-                                    </div>
+                                    </div> */}
 
                                     <p class="text-center h6">OR:</p>
 

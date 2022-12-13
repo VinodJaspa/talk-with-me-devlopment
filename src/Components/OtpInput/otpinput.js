@@ -16,44 +16,54 @@ export function OtpScreen() {
     setOtp(otp);
   }
   const userNumber = localStorage.getItem("mobileNumber");
-  console.log(userNumber, "userNumber");
+  const verificationPending = window.verfiyOtp;
+
   const last4Str = String(userNumber).slice(-4);
   const verfiyOtp = async () => {
-    if (otp && otp.length === 6) {
-      try {
-        setLoading(true);
-        const res = await window.verfiyOtp.confirm(otp);
-        if (res.user) {
-          const saveUser = await saveUserInformation(res);
-          if (saveUser) {
-            setLoading(false);
-            dispatch(authSuccess(res.user))
-            navigate("../payment");
+    if (verificationPending !== undefined) {
+      if (otp && otp.length === 6) {
+        try {
+          setLoading(true);
+          const res = await window.verfiyOtp.confirm(otp);
+          if (res.user) {
+            const saveUser = await saveUserInformation(res);
+            if (saveUser) {
+              setLoading(false);
+              dispatch(authSuccess([res.user]))
+              navigate("../get-user-email");
+            }
           }
+
+        } catch (err) {
+          setLoading(false);
+
+          toast.error(err, { theme: "colored" });
         }
 
-      } catch (err) {
-        toast.error(err, { theme: "colored" });
-      }
+      } else {
+        toast.error("Please provide otp!", { theme: "colored" });
 
+      }
     } else {
-      toast.error("Please provide otp!", { theme: "colored" });
+      toast.error("Your session is over please try again!", { theme: "colored" });
+
+      navigate("../sign-up-with-phone-number");
 
     }
 
 
+
   }
-  const mobileNumber = window.verfiyOtp;
-  console.log(mobileNumber, "mobileNumber");
+
   return (
-    <div className="verifyDiv">
+    <div className="verifyDiv child">
       <p className="p1">Verify Account</p>
       <p className="p2 mt-4">
         An OTP has been sent to your mobile number ending with {last4Str}`
       </p>
       <div className="otpElements">
         <p className="p3">Enter your Code here</p>
-        <div className="otp">
+        <div className="otp ">
           <OtpInput
             onChange={handleChange}
             inputStyle="inputStyle"

@@ -1,16 +1,18 @@
 import React from 'react'
+import Stepthree from '../../Components/SignUpWithPhone/stepthree'
 
-import SignUpWithPhone from '../../Components/SignUpWithPhone/signupwithphone'
 
 
-export default function SignUpWithPhonePage() {
+export default function GetUserEmailPage() {
     return (
         <div className='container-fluid'>
 
 
             <div className='container  mt-6'>
                 <div className='login-wrapper'>
-                 <SignUpWithPhone/>
+                    <div class="form-group m-auto">
+                        <Stepthree />
+                    </div>
 
                 </div>
 

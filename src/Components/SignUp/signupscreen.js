@@ -11,39 +11,29 @@ import { Field, Form, Formik } from 'formik';
 import { createUser } from '../../Services/signuphelper';
 export default function SignUpScreen() {
     const [loading, setLoading] = useState(false);
-    const [passwordType, setPasswordType] = useState("password");
     const navigate = useNavigate();
-
-
     const signUpValidation = Yup.object().shape({
         email: Yup.string().email("Must be a valid email").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
         // username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
-        password: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Required")
+
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-        setLoading(true);
-        const res = await createUser(values)
-        console.log(res, "ress___");
-        if (res === true) {
-            setLoading(false);
-            navigate("../success-signup");
-            return;
-        } else {
-            setLoading(false);
-        }
+
+
+        navigate(
+            '../sign-up-step-two',
+            {
+                state: {
+                    ...values
+                }
+            }
+        )
+
 
     }
-    // Function to show and hide password
-    const togglePassword = () => {
-        if (passwordType === "password") {
-            setPasswordType("text");
-            return;
-        }
 
-        setPasswordType("password");
-    };
     return (
         <div class="d-flex justify-content-center container">
 
@@ -51,7 +41,7 @@ export default function SignUpScreen() {
                 {
                     username: "",
                     email: "",
-                    password: ""
+
                 }
             }
                 validationSchema={signUpValidation}
@@ -89,23 +79,7 @@ export default function SignUpScreen() {
                                         ) : null}
 
                                     </div>
-                                    <div className='password-container'>
 
-
-                                        <div className="form-group mt-4 ">
-                                            <label htmlFor="userPassword" className='helper-text-label'>Password</label>
-                                            <Field type={passwordType}
-                                                name="password"
-                                                className="form-control"
-                                                id="userPassword" />
-
-                                        </div>
-                                        <i className="bi bi-eye-slash password-eye" onClick={togglePassword}> </i>
-
-                                        {errors.password && touched.password ? (
-                                            <div className='text-danger'>{errors.password}</div>
-                                        ) : null}
-                                    </div>
 
                                     <div className="row mt-4">
                                         <div className="col-md-12 d-flex justify-content-strt">

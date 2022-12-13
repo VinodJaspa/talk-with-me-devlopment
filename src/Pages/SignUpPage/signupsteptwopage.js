@@ -1,16 +1,16 @@
 import React from 'react'
+import SignUpStepTwo from '../../Components/SignUp/steptwo'
 
-import SignUpWithPhone from '../../Components/SignUpWithPhone/signupwithphone'
 
 
-export default function SignUpWithPhonePage() {
+export default function SignUpStepTwoPage() {
     return (
         <div className='container-fluid'>
 
 
             <div className='container  mt-6'>
                 <div className='login-wrapper'>
-                 <SignUpWithPhone/>
+                    <SignUpStepTwo />
 
                 </div>
 

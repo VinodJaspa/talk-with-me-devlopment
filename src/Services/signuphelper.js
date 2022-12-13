@@ -5,11 +5,11 @@ import { db } from "../Firebase/firebaseconfig";
 
 export const createUser = async (values) => {
     const { email, password, username } = values;
-    var isSuccess = false;
+    var isSuccess = [];
     try {
         const auth = getAuth();
         let res = await createUserWithEmailAndPassword(auth, email, password)
-        console.log(res, "res___");
+
         if (res) {
             const { createdAt } = res.user.metadata;
             const uid = res.user.uid;
@@ -28,8 +28,8 @@ export const createUser = async (values) => {
                         localStorage.setItem("emailForSignIn", user.email);
                         toast.success(msg, { theme: "colored" });
                         // Email verification sent!
-                        auth.signOut();
-                        isSuccess = true;
+                        // auth.signOut();
+                        isSuccess = res.user;
                         setDoc(doc(db, 'users', createdAt), {
                             ...res.user.metadata,
                             email: email,
@@ -58,14 +58,15 @@ export const createUser = async (values) => {
 
 
             }
-            return isSuccess;
+            
         }
     }
     catch (e) {
         console.log(e, "errr");
         toast.error(e.message, { theme: "colored" });
-        return isSuccess;
+        
 
     }
+    return isSuccess;
 };
 //Redirect user to the link when click on email

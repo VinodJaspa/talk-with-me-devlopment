@@ -4,3 +4,8 @@
     border: 2px solid #bbbbbb;
     padding: 10px;
   }
+  @media only screen and(max-width: 400px) {
+   .child{
+    width:100%
+   }
+  }
