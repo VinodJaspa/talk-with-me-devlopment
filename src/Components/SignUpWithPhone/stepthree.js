@@ -5,13 +5,14 @@ import * as Yup from "yup";
 import { Field, Form, Formik } from 'formik';
 import Button from '../PaymentButton/paymentbutton';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoggedIn } from '../../Redux/userauth';
 
 export default function Stepthree() {
     const [loading, setLoading] = useState(false);
     const userdata = useSelector((state) => state.userInfo.data);
-    const {uid}= userdata;
-
+    const { uid } = userdata;
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -23,26 +24,26 @@ export default function Stepthree() {
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-        if(values.email){
+        if (values.email) {
             toast.success("Your email adress is added succesfully", { theme: "colored" })
 
             // // const update = await addUser(values.email , uid)
             // if(update){
             //  toast.success("Your email adress is added succesfully", { theme: "colored" })
             //  setLoading(false);
-     
+
             //  navigate("../payment");
             // } else {
             //  setLoading(false);
-     
+
             //  toast.success("Please try again something went worng", { theme: "colored" })
-     
+
             // }
-        navigate("../payment");
+            dispatch(setLoggedIn(true));
 
         }
-    
-      
+
+
     }
 
     return (
@@ -51,7 +52,7 @@ export default function Stepthree() {
             <Formik initialValues={
                 {
 
-               email: "",
+                    email: "",
 
                 }
             }
