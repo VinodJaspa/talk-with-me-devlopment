@@ -5,12 +5,13 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authSuccess, setLoggedIn } from '../../Redux/userauth';
+import { getcurrentUserData } from '../../Services/loginhelper';
 import { saveUserInformation } from '../../Services/signupwithphone';
 export function VerifyLoginOtpScreen() {
     const [otp, setOtp] = useState();
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
- 
+
     const dispatch = useDispatch()
     const handleChange = (otp) => {
         setOtp(otp);
@@ -26,21 +27,22 @@ export function VerifyLoginOtpScreen() {
                     setLoading(true);
                     const res = await window.verfiyOtp.confirm(otp);
                     if (res.user) {
-                        const saveUser = await saveUserInformation(res);
-                        if (saveUser) {
+                        const uid = res.user.uid;
+                        let response = await getcurrentUserData(uid);
+                         if (response.length) {
                             setLoading(false);
-                            toast.error("You are succefully logged in!", { theme: "colored" });
-
-                            dispatch(authSuccess([res.user]))
+                            dispatch(authSuccess(response))
                             dispatch(setLoggedIn(true));
-                        }
+                        } else {
+                            setLoading(false);
+                            toast.error("Error fetching user data", { theme: "colored" });
+                          }
                     }
 
                 } catch (err) {
-                    console.log(err,"ererere");
+                    console.log(err, "ererere");
                     setLoading(false);
-
-                    toast.error(err, { theme: "colored" });
+                    toast.error("Soething went wrong please check your otp!", { theme: "colored" });
                 }
 
             } else {

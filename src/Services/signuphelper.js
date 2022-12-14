@@ -77,7 +77,7 @@ export const getUserList = () => {
             onSnapshot(userRef, (doc) => getData(doc.docs))
 
             const getData = async (payload) => {
-                let data = payload.map((ele) => ({ username: ele.data().username  , email:ele.data().email}))
+                let data = payload.map((ele) => ({ username: ele.data().username  , email:ele.data().email , phoneNumber:ele.data().phoneNumber}))
 
                 resolve(data)
 

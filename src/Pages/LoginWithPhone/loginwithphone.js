@@ -16,11 +16,11 @@ export default function LoginWithPhone() {
 
     const navigate = useNavigate();
 
-    const phoneSchema = Yup.string().matches(new RegExp('[+0-9]{7}'))
+    const phoneSchema = Yup.string().matches(new RegExp('[+0-9]{14}'))
     const signUpValidation = Yup.object().shape({
 
         // phoneNumber: Yup.string().matches(phoneSchema, 'Phone number is not valid'),
-        username: Yup.string().required("Required"),
+        // username: Yup.string().required("Required"),
 
     });
 
@@ -30,6 +30,7 @@ export default function LoginWithPhone() {
             const getUserEmail = allUsers?.find((udx => udx.phoneNumber === values.phoneNumber))
             if (getUserEmail !== undefined) {
                 const { phoneNumber, username } = getUserEmail;
+                console.log(phoneNumber,"phoneNumber" ,username,"usename");
                 if (phoneNumber && username) {
                     setLoading(true);
                     const res = await SignUpWithPhoneHelper(values)
