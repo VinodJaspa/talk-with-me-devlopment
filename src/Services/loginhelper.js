@@ -14,17 +14,14 @@ export const getAuthentication = async (values) => {
         );
         if (res) {
             const uid = res.user.uid;
-            if (res && res.user.emailVerified === true) {
-                response = await getcurrentUserData(uid);
-                if (response.length) {
-                    return response;
-                } else {
-                    return response;
-                }
-              } else {
-                toast.error("Your email address is not verfied please verify it.", { theme: "colored" });
+
+            response = await getcurrentUserData(uid);
+            if (response.length) {
                 return response;
-             }
+            } else {
+                return response;
+            }
+
         }
     }
     catch (e) {
@@ -37,7 +34,7 @@ export const getAuthentication = async (values) => {
 };
 
 export const getcurrentUserData = (userID) => {
-    console.log(userID,"IDDD");
+    console.log(userID, "IDDD");
     return new Promise((resolve, reject) => {
         try {
             let currrentUser = collection(db, `users`)

@@ -1,7 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import Avatar from '../UserAvatar/avatar'
 
 export default function UserCard() {
+    const user = useSelector((state) => state.userInfo.data);
+    console.log(user ,"user___");
+    const {username} = user[0]
+
     return (
         <div className="card" style={{ borderRadius: '15px' ,border:'none'}}>
             <div className="card-body p-4">
@@ -10,7 +15,7 @@ export default function UserCard() {
                         <Avatar />
                     </div>
                     <div className="flex-grow-1 ms-3 px-4">
-                        <p className="mb-2 pb-1 helper-text" style={{ color: '#2b2a2a' }}>Lucifer Jane</p>
+                        <p className="mb-2 pb-1 helper-text" style={{ color: '#2b2a2a' }}>{username}</p>
 
                         <h5 className="mb-1  helper-text'">Consultation talk with me!</h5>
                         <div className="rounded-3  mb-2"
