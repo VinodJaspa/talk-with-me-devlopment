@@ -9,7 +9,7 @@ import { getAuthentication } from '../../Services/loginhelper';
 import { useDispatch } from 'react-redux';
 
 import { Formik, Form, Field } from 'formik';
-import { authSuccess } from '../../Redux/userauth';
+import { authSuccess, setLoggedIn } from '../../Redux/userauth';
 import { getUserList } from '../../Services/signuphelper';
 export default function LoginScreen() {
     const [loading, setLoading] = useState(false);
@@ -46,6 +46,7 @@ export default function LoginScreen() {
                     if (response.length > 0) {
                         //sending the user information in store  
                         dispatch(authSuccess(response))
+                        dispatch(setLoggedIn(true));
                         toast.success("You are successfully log in!", { theme: "colored" });
                         setLoading(false);
                         return;
