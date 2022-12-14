@@ -1,5 +1,6 @@
 import React from 'react'
-import { OtpScreen } from '../../Components/OtpInput/otpinput'
+import { SignUpOtpScreen } from '../../Components/OtpInput/otpinput'
+
 
 
 
@@ -12,7 +13,7 @@ export default function OtpPage() {
 
             <div className='container  mt-6'>
                 <div className='login-wrapper'>
-                    <OtpScreen />
+                    <SignUpOtpScreen />
 
                 </div>
 

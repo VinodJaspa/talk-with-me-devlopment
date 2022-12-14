@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import Button from '../../Components/PaymentButton/paymentbutton';
@@ -8,20 +8,22 @@ import './signup.css';
 
 
 import { Field, Form, Formik } from 'formik';
-import { createUser } from '../../Services/signuphelper';
+import { createUser, getUserList } from '../../Services/signuphelper';
 export default function SignUpScreen() {
     const [loading, setLoading] = useState(false);
+    const [alreadyExistsUserName, setAlreadyExistsUserName] = useState(null);
     const navigate = useNavigate();
     const signUpValidation = Yup.object().shape({
         email: Yup.string().email("Must be a valid email").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
-        // username: Yup.string().username("Must be a valid username").min(2, "Too Short!").max(50, "Too Long!").required("Required"),
+        username: Yup.string()
+            .min(1, "Mininum 1 characters")
+            .max(15, "Maximum 15 characters")
 
+            .required("You must enter a username"),
     });
 
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
-
-
         navigate(
             '../sign-up-step-two',
             {
@@ -30,9 +32,45 @@ export default function SignUpScreen() {
                 }
             }
         )
-
-
     }
+    //Function to check that usename is already exist or not
+    function validateUsername(userName) {
+        let error;
+        if (alreadyExistsUserName.length > 0) {
+            // eslint-disable-next-line array-callback-return
+            alreadyExistsUserName.map(function (value) {
+                if (value.username === userName) {
+                    console.log(value.username, "value.username");
+                    error = "Username already taken by another user!"
+                }
+
+            })
+            return error;
+        }
+    };
+    //Function to check that email is already exist or not
+    function validateEmail(email) {
+        let error;
+        if (alreadyExistsUserName.length > 0) {
+            // eslint-disable-next-line array-callback-return
+            alreadyExistsUserName.map(function (value) {
+                if (value.email === email) {
+                    console.log(value.username, "value.username");
+                    error = "Email already used by another user!"
+                }
+
+            })
+            return error;
+        }
+    };
+    //use Efeect to fetcbh username
+    useEffect(() => {
+        getUserList().then((res) => {
+            setAlreadyExistsUserName(res)
+
+        })
+    }, [])
+
 
     return (
         <div class="d-flex justify-content-center container">
@@ -44,6 +82,7 @@ export default function SignUpScreen() {
 
                 }
             }
+
                 validationSchema={signUpValidation}
                 onSubmit={
                     (values) => handleSubmit(values)
@@ -63,7 +102,7 @@ export default function SignUpScreen() {
 
                                     <div className="form-group mt-4">
                                         <label htmlFor="userName" className='helper-text-label'>User Name</label>
-                                        <Field type="text" name="username" className="form-control" id="userName" />
+                                        <Field type="text" name="username" className="form-control" id="userName" validate={validateUsername} />
 
                                         {errors.username && touched.username ? (
                                             <div className='text-danger'>{errors.username}</div>
@@ -72,7 +111,7 @@ export default function SignUpScreen() {
                                     </div>
                                     <div className="form-group mt-4">
                                         <label htmlFor="userEmail" className='helper-text-label'>Email</label>
-                                        <Field type="email" name="email" className="form-control" id="userEmail" />
+                                        <Field type="email" name="email" className="form-control" id="userEmail" validate={validateEmail} />
 
                                         {errors.email && touched.email ? (
                                             <div className='text-danger'>{errors.email}</div>

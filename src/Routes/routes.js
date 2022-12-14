@@ -11,6 +11,8 @@ import SignUpStepTwo from '../Components/SignUp/steptwo';
 import CheckoutPage from '../Pages/CheckoutPage/checkout';
 import GetUserEmailPage from '../Pages/GetUserEmailPage/getuseremail';
 import LoginPage from '../Pages/Login/loginmain';
+import LoginWithPhone from '../Pages/LoginWithPhone/loginwithphone';
+import { VerifyLoginOtpScreen } from '../Pages/LoginWithPhone/verifyotp';
 import OtpPage from '../Pages/OtpPage/otppage';
 import SignUpPage from '../Pages/SignUpPage/signuppage';
 import SignUpStepTwoPage from '../Pages/SignUpPage/signupsteptwopage';
@@ -45,11 +47,12 @@ export default function PageRoutes() {
             <Routes>
                 <Route element={<PublicRoute isAuthenticated={isUserLoggedIn} />}>
                     <Route path="/" element={<LoginPage />} />
+                    <Route path="login-with-phone" element={<LoginWithPhone />} />
+                    <Route path="login-otp" element={<VerifyLoginOtpScreen />} />
                     <Route path='sign-up-with-email' element={<SignUpPage />} />
-                    <Route path="sign-up-step-two" element={<SignUpStepTwoPage/>}/>
+                    <Route path="sign-up-step-two" element={<SignUpStepTwoPage />} />
                     <Route path='success-signup' element={<ThanksSignUpPage />} />
                     <Route path='sign-up-with-phone-number' element={<SignUpWithPhonePage />} />
-
                     <Route path='verify-otp' element={<OtpPage />} />
                     <Route path="get-user-email" element={<GetUserEmailPage />} />
 

@@ -1,6 +1,6 @@
 
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { db } from "../Firebase/firebaseconfig";
 
@@ -30,7 +30,7 @@ export const SignUpWithPhoneHelper = async (values) => {
 
 
 }
-export const saveUserInformation = async (res) => {
+export const saveUserInformation = async (res, state) => {
   var response = false;
   try {
     const { createdAt } = res.user.metadata;
@@ -42,10 +42,12 @@ export const saveUserInformation = async (res) => {
       email: email,
       username: '',
       photoURL: photoURL,
-      uid: uid
+      uid: uid,
+      ...state
     })
       .then(() => {
         console.log('Document successfully written!')
+        
         toast.success("You have successfully created your account", { theme: "colored" });
         response = true;
       }).catch((error) => {
@@ -60,6 +62,28 @@ export const saveUserInformation = async (res) => {
   return response;
 
 }
-const addUserEmail = async (email, uid) => {
+export const addUserEmail = async (email, createdAt) => {
+  console.log(createdAt,"createdAt");
+  var response = false;
+  try {
+    const user = doc(db, "users", createdAt);
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(user, {
+      email: email,
+    })
+
+      .then(() => {
+        response = true;
+      }).catch((error) => {
+        toast.error("Oops! Something went wrong!", { theme: "colored" });
+        console.error('Error writing document: ', error)
+      })
+  } catch (err) {
+    console.log(err, "errr");
+    response = false
+    toast.error("Oops! Something went wrong!", { theme: "colored" });
+
+  }
+  return response;
 
 }

@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { db } from "../Firebase/firebaseconfig";
 
@@ -58,15 +58,33 @@ export const createUser = async (values) => {
 
 
             }
-            
+
         }
     }
     catch (e) {
         console.log(e, "errr");
         toast.error(e.message, { theme: "colored" });
-        
+
 
     }
     return isSuccess;
 };
-//Redirect user to the link when click on email
+//get username list and email list
+export const getUserList = () => {
+    return new Promise((resolve, reject) => {
+        try {
+            const userRef = collection(db, "users")
+            onSnapshot(userRef, (doc) => getData(doc.docs))
+
+            const getData = async (payload) => {
+                let data = payload.map((ele) => ({ username: ele.data().username  , email:ele.data().email}))
+
+                resolve(data)
+
+            }
+        } catch (err) {
+            reject(err);
+        }
+    })
+
+}

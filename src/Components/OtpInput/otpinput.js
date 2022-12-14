@@ -2,16 +2,19 @@
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authSuccess } from '../../Redux/userauth';
+import { getcurrentUserData } from '../../Services/loginhelper';
 import { saveUserInformation } from '../../Services/signupwithphone';
 import "./otpstyle.css";
-export function OtpScreen() {
+export function SignUpOtpScreen() {
   const [otp, setOtp] = useState();
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch()
+  const { state } = useLocation();
+  console.log(state, "steeee");
   const handleChange = (otp) => {
     setOtp(otp);
   }
@@ -26,11 +29,23 @@ export function OtpScreen() {
           setLoading(true);
           const res = await window.verfiyOtp.confirm(otp);
           if (res.user) {
-            const saveUser = await saveUserInformation(res);
+            const saveUser = await saveUserInformation(res, state);
             if (saveUser) {
-              setLoading(false);
-              dispatch(authSuccess([res.user]))
-              navigate("../get-user-email");
+              const uid = res.user.uid;
+
+              let response = await getcurrentUserData(uid);
+              
+                if (response.length) {
+                  setLoading(false);
+                  dispatch(authSuccess(response))
+                  navigate("../get-user-email");
+                } else {
+                  setLoading(false);
+                  toast.error("Error fetching user data", { theme: "colored" });
+
+                }
+              
+
             }
           }
 

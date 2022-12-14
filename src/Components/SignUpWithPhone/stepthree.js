@@ -7,11 +7,13 @@ import Button from '../PaymentButton/paymentbutton';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoggedIn } from '../../Redux/userauth';
+import { addUserEmail } from '../../Services/signupwithphone';
 
 export default function Stepthree() {
     const [loading, setLoading] = useState(false);
-    const userdata = useSelector((state) => state.userInfo.data);
-    const { uid } = userdata;
+    const userdata = useSelector((state) => state.userInfo.data[0]);
+    console.log(userdata,"userdata");
+    const { createdAt } = userdata;
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -25,26 +27,19 @@ export default function Stepthree() {
     // Calling function to get user inforamtion from firebase
     const handleSubmit = async (values) => {
         if (values.email) {
-            toast.success("Your email adress is added succesfully", { theme: "colored" })
+            const update = await addUserEmail(values.email, createdAt)
+            if (update) {
+                toast.success("Your email adress is added succesfully", { theme: "colored" })
+                setLoading(false);
 
-            // // const update = await addUser(values.email , uid)
-            // if(update){
-            //  toast.success("Your email adress is added succesfully", { theme: "colored" })
-            //  setLoading(false);
+                dispatch(setLoggedIn(true));
+            } else {
+                setLoading(false);
 
-            //  navigate("../payment");
-            // } else {
-            //  setLoading(false);
-
-            //  toast.success("Please try again something went worng", { theme: "colored" })
-
-            // }
-            dispatch(setLoggedIn(true));
-
+            }
         }
-
-
     }
+
 
     return (
         <div class="d-flex justify-content-center container">

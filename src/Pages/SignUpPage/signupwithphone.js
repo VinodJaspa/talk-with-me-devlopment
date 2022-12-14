@@ -11,8 +11,7 @@ export default function SignUpWithPhonePage() {
             <div className='container  mt-6'>
                 <div className='login-wrapper'>
                  <SignUpWithPhone/>
-
-                </div>
+              </div>
 
             </div>
         </div>

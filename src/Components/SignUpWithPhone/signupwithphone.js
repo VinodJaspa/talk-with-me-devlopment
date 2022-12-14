@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import Button from '../PaymentButton/paymentbutton';
@@ -9,8 +9,12 @@ import { Field, Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { SignUpWithPhoneHelper } from '../../Services/signupwithphone';
 import { PhoneNumber } from '../PhoneInput/phoneInput';
+import { getUserList } from '../../Services/signuphelper';
+
+
 export default function SignUpWithPhone() {
     const [loading, setLoading] = useState(false);
+    const [alreadyExistsUserName, setAlreadyExistsUserName] = useState(null);
 
     const navigate = useNavigate();
 
@@ -34,15 +38,52 @@ export default function SignUpWithPhone() {
                 setLoading(false);
                 toast.success("An otp has been sent to your mobile number", { theme: "colored" })
 
-                navigate("../verify-otp");
+                navigate("../verify-otp", {state:{...values}});
 
                 return;
             } else {
                 setLoading(false);
             }
-           }
+        }
 
     }
+    //Function to check that usename is already exist or not
+    function validateUsername(userName) {
+        let error;
+        if (alreadyExistsUserName.length > 0) {
+            // eslint-disable-next-line array-callback-return
+            alreadyExistsUserName.map(function (value) {
+                if (value.username === userName) {
+                    console.log(value.username, "value.username");
+                    error = "Username already taken by another user!"
+                }
+
+            })
+            return error;
+        }
+    };
+        //Function to check that usename is already exist or not
+        function validatePhoneNumber(phoneNumber) {
+            let error;
+            if (alreadyExistsUserName.length > 0) {
+                // eslint-disable-next-line array-callback-return
+                alreadyExistsUserName.map(function (value) {
+                    if (value.username === phoneNumber) {
+                        console.log(value.username, "value.username");
+                        error = "Phone Number already in use!"
+                    }
+    
+                })
+                return error;
+            }
+        };
+    //use Efeect to fetcbh username
+    useEffect(() => {
+        getUserList().then((res) => {
+            setAlreadyExistsUserName(res)
+
+        })
+    }, [])
 
 
     return (
@@ -74,7 +115,7 @@ export default function SignUpWithPhone() {
 
                                     <div className="form-group mt-4">
                                         <label htmlFor="userName" className='helper-text-label'>User Name</label>
-                                        <Field type="text" name="username" className="form-control" id="userName" />
+                                        <Field type="text" name="username" className="form-control" id="userName" validate={validateUsername} />
 
                                         {errors.username && touched.username ? (
                                             <div className='text-danger'>{errors.username}</div>
@@ -89,6 +130,7 @@ export default function SignUpWithPhone() {
                                             name="phoneNumber"
                                             className="form-control"
                                             id="phoneNumberInput"
+                                            validate={validatePhoneNumber}
                                         // component={PhoneNumber}
                                         />
 

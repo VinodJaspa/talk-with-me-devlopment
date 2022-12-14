@@ -17,7 +17,7 @@ export default function SignUpStepTwo() {
     const navigate = useNavigate();
     const { state } = useLocation();
     const dispatch = useDispatch();
-    console.log(state, "stteee");
+
 
     const signUpValidation = Yup.object().shape({
 
@@ -32,9 +32,9 @@ export default function SignUpStepTwo() {
             ...values
         }
         const res = await createUser(obj)
+        console.log(res, "ress");
 
         if (res) {
-            console.log(res, "ress");
             setLoading(false);
             dispatch(authSuccess([res]));
 
