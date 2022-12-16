@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { authSuccess, setLoggedIn } from '../../Redux/userauth';
 import { getUserList } from '../../Services/signuphelper';
+import { LoginSideImage } from '../../Utils/imagefiles';
 export default function LoginScreen() {
     const [loading, setLoading] = useState(false);
     const [passwordType, setPasswordType] = useState("password");
@@ -97,7 +98,18 @@ export default function LoginScreen() {
         })
     }, [])
     return (
-        <div class="d-flex justify-content-center container">
+        <>
+        <h1 className='mx-4 text-large mb-4 p-2'>Welcome back user!</h1>
+
+        <div class="d-flex justify-content-center">
+                 
+         <div className='col-md-6'>
+            <div className='user-card'>
+              
+            <img src={LoginSideImage} alt="logo"/>
+         </div>
+         </div>
+         <div className='col-md-6'>
 
             <Formik initialValues={
                 {
@@ -111,13 +123,8 @@ export default function LoginScreen() {
                 }>
                 {({ errors, touched }) => (
                     <div class="user_card">
-                        <div class="d-flex justify-content-center">
-                            <div class="brand_logo_container">
-                                <img src="https://pbs.twimg.com/profile_images/562941964371640320/iKyya_R5_400x400.jpeg" class="brand_logo" alt="Logo" />
-                            </div>
-                        </div>
                         <div class="d-flex justify-content-center form_container">
-
+   
                             <Form className='form-container'>
 
                                 <div>
@@ -143,11 +150,11 @@ export default function LoginScreen() {
                                     {/* <p class="text-center h6">OR:</p> */}
 
                                     <div className="form-group mt-4">
-                                        <label htmlFor="userName" className='helper-text-label'>Username</label>
+                                        <label htmlFor="userName" className='helper-text-label mx-3'>Username</label>
                                         <Field type="text" name="username" className="form-control" id="userName" />
 
                                         {errors.username && touched.username ? (
-                                            <div className='text-danger'>{errors.username}</div>
+                                            <div className='text-danger mx-3 pt-1'>{errors.username}</div>
                                         ) : null}
 
                                     </div>
@@ -155,7 +162,7 @@ export default function LoginScreen() {
 
 
                                         <div className="form-group mt-4 ">
-                                            <label htmlFor="userPassword" className='helper-text-label'>Password</label>
+                                            <label htmlFor="userPassword" className='helper-text-label mx-3' mx-3>Password</label>
                                             <Field type={passwordType}
                                                 name="password"
                                                 className="form-control"
@@ -165,7 +172,7 @@ export default function LoginScreen() {
                                         <i className="bi bi-eye-slash password-eye" onClick={togglePassword}> </i>
 
                                         {errors.password && touched.password ? (
-                                            <div className='text-danger'>{errors.password}</div>
+                                            <div className='text-danger  mx-3 pt-1'>{errors.password}</div>
                                         ) : null}
                                     </div>
                                     <div className="row mt-4">
@@ -207,6 +214,8 @@ export default function LoginScreen() {
                     </div>
                 )}
             </Formik>
+            </div>
         </div>
+        </>
     )
 }

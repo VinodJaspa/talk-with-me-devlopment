@@ -8,7 +8,7 @@ export default function SignUpPage() {
 
 
             <div className='container  mt-6'>
-                <div className='login-wrapper'>
+            <div className='login-wrapper row'>
                     <SignUpScreen />
 
                 </div>

@@ -7,7 +7,8 @@ export default function LoginPage() {
             
 
                 <div className='container  mt-6'>
-                    <div className='login-wrapper'>
+                    <div className='login-wrapper row'>
+                        
                     <LoginScreen />
 
                     </div>

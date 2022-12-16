@@ -9,6 +9,7 @@ import './signup.css';
 
 import { Field, Form, Formik } from 'formik';
 import { createUser, getUserList } from '../../Services/signuphelper';
+import { LoginSideImage } from '../../Utils/imagefiles';
 export default function SignUpScreen() {
     const [loading, setLoading] = useState(false);
     const [alreadyExistsUserName, setAlreadyExistsUserName] = useState(null);
@@ -73,8 +74,22 @@ export default function SignUpScreen() {
 
 
     return (
-        <div class="d-flex justify-content-center container">
+        <>
+          {/* <h1 className='mx-4 text-large mb-4 p-2'>Your account is just few click away!</h1><br/> */}
 
+        <div class="d-flex justify-content-center container mt-5">
+      
+
+        <div className='col-md-6'>
+            
+            <div className='user-card'>
+              
+            <img src={LoginSideImage} alt="logo"/>
+         </div>
+         </div>
+         <div className='col-md-6'>
+
+    
             <Formik initialValues={
                 {
                     username: "",
@@ -89,11 +104,11 @@ export default function SignUpScreen() {
                 }>
                 {({ errors, touched }) => (
                     <div class="user_card">
-                        <div class="d-flex justify-content-center">
+                        {/* <div class="d-flex justify-content-center">
                             <div class="brand_logo_container">
                                 <img src="https://pbs.twimg.com/profile_images/562941964371640320/iKyya_R5_400x400.jpeg" class="brand_logo" alt="Logo" />
                             </div>
-                        </div>
+                        </div> */}
                         <div class="d-flex justify-content-center form_container">
 
                             <Form className='form-container'>
@@ -165,6 +180,8 @@ export default function SignUpScreen() {
                     </div>
                 )}
             </Formik>
+            </div>
         </div>
+        </>
     )
 }
